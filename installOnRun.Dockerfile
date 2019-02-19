@@ -1,5 +1,4 @@
 FROM tomcat:8-jre8
-MAINTAINER Alexandros Sigaras <als2076@med.cornell.edu>, Fedde Schaeffer <fedde@thehyve.nl>
 LABEL Description="cBioPortal for Cancer Genomics"
 ENV PORTAL_HOME="/cbioportal"
 #======== Install Prerequisites ===============#
