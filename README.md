@@ -1,3 +1,19 @@
+# cbioportal-docker-luposung #
+
+Use docker-compose.
+
+Upload seed data by bash in `cbiodb`
+```
+cat /mnt/cgds.sql | mysql -hlocalhost -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" cbioportal && zcat /mnt/seed.sql.gz |  mysql -hlocalhost -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" cbioportal
+```
+
+Local instance of cBioPortal can be reached at http://localhost:8081/cbioportal.
+
+## To-do ##
+
+1. Compile .war at image build.
+2. Upload seed data at docker-compose.
+
 # cbioportal-docker @ The Hyve #
 
 The [cBioPortal](https://github.com/cBioPortal/cbioportal) project documents a setup to deploy a cBioPortal server using Docker, in [this section of the documentation](https://cbioportal.readthedocs.io/en/latest/#docker). As cBioPortal traditionally does not distinguish between build-time and deploy-time configuration, the setup documented there builds the application at runtime, and suggests running auxiliary commands in the same container as the webserver. The above approach may sacrifice a few advantages of using Docker by going against some of its idioms. For this reason, the project you are currently looking at documents an alternative setup, which builds a ready-to-run cBioPortal application into a Docker image.

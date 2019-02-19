@@ -1,0 +1,45 @@
+version: '2.1'
+
+services:
+  cbioportal:
+    image: cbioportal:latest
+    container_name: cbioportal
+    depends_on:
+      - cbiodb
+    networks:
+      - cbionet
+    restart: always
+    build:
+      context: .
+      dockerfile: installOnRun.Dockerfile
+    ports:
+      - 8081:8080
+    environment:
+      CATALINA_OPTS: '-Xms2g -Xmx4g'
+    volumes:
+      - ./portal.properties:/cbioportal/src/main/resources/portal.properties:ro
+      - ./volumes/logs/cbioportal:/cbioportal_logs/
+      - ./volumes/logs/tomcat:/usr/local/tomcat/logs/
+      - ./volumes/studies:/cbioportal_studies/:ro
+
+  cbiodb:
+    image: mysql:5.7
+    container_name: cbiodb
+    networks: 
+      - cbionet
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: P@ssword
+      MYSQL_USER: cbio
+      MYSQL_PASSWORD: P@ssword
+      MYSQL_DATABASE: cbioportal
+    volumes:
+      - ./volumes/db_files:/var/lib/mysql
+      - <path_to_seed_database>/cgds.sql:/mnt/cgds.sql:ro
+      - <path_to_seed_database>/seed-cbioportal_hg19_v2.7.3.sql.gz:/mnt/seed.sql.gz:ro
+  
+networks:
+  cbionet:
+    driver: bridge
